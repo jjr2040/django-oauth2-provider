@@ -8,7 +8,7 @@ from .forms import AuthorizationRequestForm, AuthorizationForm
 from .forms import PasswordGrantForm, RefreshTokenGrantForm
 from .forms import AuthorizationCodeGrantForm
 from .models import Client, RefreshToken, AccessToken
-from .backends import BasicClientBackend, RequestParamsClientBackend, PublicPasswordBackend
+from .backends import BasicClientBackend, RequestParamsClientBackend, PasswordBackend
 
 
 class Capture(Capture):

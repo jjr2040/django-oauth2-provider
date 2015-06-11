@@ -1,5 +1,5 @@
 from ..utils import now
-from .forms import ClientAuthForm, PublicPasswordGrantForm
+from .forms import ClientAuthForm, PublicPasswordGrantForm, PasswordGrantForm
 from .models import AccessToken
 
 
@@ -75,6 +75,26 @@ class PublicPasswordBackend(object):
             return None
 
         form = PublicPasswordGrantForm(request.REQUEST)
+
+        if form.is_valid():
+            return form.cleaned_data.get('client')
+
+        return None
+
+class PasswordBackend(object):
+    """
+    Backend that tries to authenticate a client using username and password. 
+    This is only available in specific circumstances:
+
+     - grant_type is "password"
+     - client.client_type is 'public'
+    """
+
+    def authenticate(self, request=None):
+        if request is None:
+            return None
+
+        form = PasswordGrantForm(request.REQUEST)
 
         if form.is_valid():
             return form.cleaned_data.get('client')
