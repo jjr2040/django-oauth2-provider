@@ -71,7 +71,7 @@ class AccessTokenView(AccessTokenView):
     authentication = (
         BasicClientBackend,
         RequestParamsClientBackend,
-        PublicPasswordBackend,
+        PasswordBackend,
     )
 
     def get_authorization_code_grant(self, request, data, client):
