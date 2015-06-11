@@ -298,16 +298,21 @@ class PasswordGrantForm(ScopeMixin, OAuthForm):
     def clean(self):
         data = self.cleaned_data
 
-        print data
-
         user = authenticate(username=data.get('username'),
             password=data.get('password'))
 
         if user is None:
             raise OAuthValidationError({'error': 'invalid_grant'})
 
-        data['user'] = user
-        return data
+        # data['user'] = user
+        clients = user.oauth2_client.all()
+        if clients.count() > 0:
+            data['client'] = clients.first()
+            return data
+        else:
+            return None
+            
+        
 
 
 class PublicPasswordGrantForm(PasswordGrantForm):
