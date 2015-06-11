@@ -308,11 +308,12 @@ class PasswordGrantForm(ScopeMixin, OAuthForm):
         clients = user.oauth2_client.all()
         if clients.count() > 0:
             client = clients.first()
-            
+
             if client.client_type != 1: # public
                 raise OAuthValidationError({'error': 'invalid_client'})
 
             data['client'] = clients.first()
+            data['user'] = user
             return data
         else:
             return None
