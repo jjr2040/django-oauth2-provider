@@ -298,6 +298,8 @@ class PasswordGrantForm(ScopeMixin, OAuthForm):
     def clean(self):
         data = self.cleaned_data
 
+        print data
+
         user = authenticate(username=data.get('username'),
             password=data.get('password'))
 
