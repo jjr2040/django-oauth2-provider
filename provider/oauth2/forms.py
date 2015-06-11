@@ -296,7 +296,7 @@ class PasswordGrantForm(ScopeMixin, OAuthForm):
         return password
 
     def clean(self):
-        data = self.cleaned_data
+        data = super(PasswordGrantForm, self).clean()
 
         user = authenticate(username=data.get('username'),
             password=data.get('password'))
@@ -307,6 +307,11 @@ class PasswordGrantForm(ScopeMixin, OAuthForm):
         # data['user'] = user
         clients = user.oauth2_client.all()
         if clients.count() > 0:
+            client = clients.first()
+            
+            if client.client_type != 1: # public
+                raise OAuthValidationError({'error': 'invalid_client'})
+
             data['client'] = clients.first()
             return data
         else:
